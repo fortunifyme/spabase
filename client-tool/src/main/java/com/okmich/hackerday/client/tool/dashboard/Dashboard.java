@@ -72,7 +72,8 @@ public final class Dashboard {
      * @param args
      */
     public static void main(String[] args) {
-        args = new String[]{
+
+      args = new String[]{
         "192.168.56.106:9092",                // KAFKA_BROKER_URL
         "result-aggregation-topic",           // KAFKA_TOPIC
         "192.168.56.106:2181"                 // PHOENIX_HOST
@@ -85,8 +86,6 @@ public final class Dashboard {
         set(KAFKA_TOPIC, args[1]);
         set(PHOENIX_HOST, args[2]);
         new Dashboard().start();
-
-
     }
 
     void start() {

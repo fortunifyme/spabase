@@ -5,6 +5,9 @@
  */
 package com.okmich.hackerday.client.tool.dashboard;
 
+import java.awt.*;
+import javax.swing.*;
+import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
 import static com.okmich.hackerday.client.tool.dashboard.Handler.*;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -12,6 +15,12 @@ import java.util.Map;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.WindowConstants;
+import org.jdesktop.beansbinding.AutoBinding;
+import org.jdesktop.beansbinding.BeanProperty;
+import org.jdesktop.beansbinding.Binding;
+import org.jdesktop.beansbinding.BindingGroup;
+import org.jdesktop.beansbinding.Bindings;
+import org.jdesktop.beansbinding.ELProperty;
 
 /**
  *
@@ -19,7 +28,7 @@ import javax.swing.WindowConstants;
  */
 public class ClientDashboardFrame extends javax.swing.JFrame {
 
-    private ReportItemPanel panelContext;
+    public ReportItemPanel panelContext;
 
     /**
      * Creates new form ClientDashboard
@@ -43,29 +52,44 @@ public class ClientDashboardFrame extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    // Generated using JFormDesigner Evaluation license - denis igoshev
     private void initComponents() {
+      jMenuBar1 = new JMenuBar();
+      jMenu1 = new JMenu();
 
-        jMenuBar1 = new JMenuBar();
-        jMenu1 = new JMenu();
+      //======== this ========
+      setTitle("Geolife Trajectories Dashboard");
+      setMinimumSize(new Dimension(800, 600));
+      Container contentPane = getContentPane();
+      contentPane.setLayout(new GridLayout(2, 2, 10, 10));
 
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Geolife Trajectories Dashboard");
-        setMinimumSize(new Dimension(800, 600));
-        getContentPane().setLayout(new GridLayout(2, 2, 10, 10));
+      //======== jMenuBar1 ========
+      {
 
-        jMenu1.setText("View Details");
-        jMenu1.setEnabled(false);
+        //======== jMenu1 ========
+        {
+          jMenu1.setText("View Details");
+          jMenu1.setEnabled(false);
+        }
         jMenuBar1.add(jMenu1);
+      }
+      setJMenuBar(jMenuBar1);
+      pack();
+      setLocationRelativeTo(null);
 
-        setJMenuBar(jMenuBar1);
-
-        pack();
-        setLocationRelativeTo(null);
+      //---- bindings ----
+      bindingGroup = new BindingGroup();
+      bindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
+        jMenu1, ELProperty.create("${}"),
+        this, BeanProperty.create("defaultCloseOperation")));
+      bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private JMenu jMenu1;
+    // Generated using JFormDesigner Evaluation license - denis igoshev
     private JMenuBar jMenuBar1;
+    private JMenu jMenu1;
+    private BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 
     /**

@@ -22,8 +22,6 @@ import org.jfree.chart.title.LegendTitle;
 import org.jfree.chart.title.TextTitle;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.ui.RectangleEdge;
-import org.jfree.data.general.DefaultPieDataset;
-
 
 /**
  *

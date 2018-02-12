@@ -13,28 +13,30 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
  * @author m.enudi
  */
 public class RealTimeDeviceClientSimulator {
+  private static final Logger LOG = Logger.getLogger(RealTimeDeviceClientSimulator.class.getName());
 
-    private static final Logger LOG = Logger.getLogger(RealTimeDeviceClientSimulator.class.getName());
-
-    public static void main(String[] args) {
-        if (args.length < 3) {
-            System.err.println("General argument: <data_dir> <broker_url> <topic>");
-            System.exit(-1);
-        }
-//        args = new String[]{"F:\\data_dump\\Geolife Trajectories 1.3\\Data", "192.168.8.120:9092", "test_topic"};
-        File[] files = new File(args[0]).listFiles((File dir, String name) -> name.contains(".pltdata"));
-
-        LOG.log(Level.INFO, "Files found \n{0}", Arrays.asList(files));
-        int noThreads = files.length;
-        LOG.log(Level.INFO, "setting the number of concurrent threads to {0}", noThreads);
-        Executor executor = Executors.newFixedThreadPool(noThreads);
-        for (File file : files) {
-            executor.execute(new ClientSimulator(file, args[1], args[2]));
-        }
+  public static void main(String[] args) {
+    // relevant minute 88:52
+    args = new String[]{"D:\\data_dump\\Geolife Trajectories 1.3\\Data",
+      "192.168.56.106:9092", "raw-gpstrajectory-data-topic"};
+    // real name for topic
+    if (args.length < 3) {
+      System.err.println("General argument: <data_dir> <broker_url> <topic>");
+      System.exit(-1);
     }
-
+    /**
+    Placeholder for the line with arguments ( in case running app from jar file )
+    */
+    File[] files = new File(args[0]).listFiles((File dir, String name) -> name.contains(".pltdata"));
+    LOG.log(Level.INFO, "Files found \n{0}", Arrays.asList(files));
+    int noThreads = files.length;
+    LOG.log(Level.INFO, "setting the number of concurrent threads to {0}", noThreads);
+    Executor executor = Executors.newFixedThreadPool(noThreads);
+    for (File file : files) {
+      executor.execute(new ClientSimulator(file, args[1], args[2]));
+    }
+  }
 }
