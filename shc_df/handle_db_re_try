@@ -1,0 +1,5 @@
+>> hbase shell 
+>> disable 'mvment_by_traj'
+>> create 'mvment_by_traj','main'
+>> scan 'mvment_by_traj'
+ 

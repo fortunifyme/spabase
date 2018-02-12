@@ -1,0 +1,18 @@
+
+
+# mvment_by_traj db base main commands
+disable 'mvment_by_traj'
+drop 'mvment_by_traj'
+create 'mvment_by_traj','main'
+scan 'mvment_by_traj'
+describe 'mvment_by_traj'
+
+
+# mvment db base main commands
+disable 'mvment'
+drop 'mvment'
+create 'mvment','main'
+scan 'mvment'
+
+
+ 

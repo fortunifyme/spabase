@@ -24,7 +24,7 @@ libraryDependencies += "it.nerdammer.bigdata" % "spark-hbase-connector_2.10" % "
   ExclusionRule(organization = "com.sun.jersey", name="jersey-core"),
   ExclusionRule(organization = "commons-io"), ExclusionRule(organization = "commons-cli"),
   ExclusionRule(organization = "commons-el"), ExclusionRule(organization = "org.apache.commons"),
-  ExclusionRule(organization = "commons-lang"), ExclusionRule(organization = "commons-logging"),
+  // ExclusionRule(organization = "commons-lang"), ExclusionRule(organization = "commons-logging"),
   ExclusionRule(organization = "commons-codec"), ExclusionRule(organization = "commons-httpclient"),
   ExclusionRule(organization = "commons-collections"), ExclusionRule(organization = "org.jruby.jcodings"),
   ExclusionRule(organization = "org.jruby"), ExclusionRule(organization = "org.slf4j"),
