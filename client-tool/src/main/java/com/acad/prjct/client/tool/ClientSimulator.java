@@ -21,11 +21,6 @@ public class ClientSimulator implements Runnable {
   private static final Logger LOG = Logger.getLogger(ClientSimulator.class.getName()
     + Thread.currentThread().getName());
 
-  /**
-   * @param file
-   * @param brokerUrl
-   * @param topic
-   */
   ClientSimulator(File file, String brokerUrl, String topic) {
     this.file = file;
     this.topic = topic;

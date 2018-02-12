@@ -84,13 +84,18 @@ public class FileMerger {
     Stream<Path> files = Files.list(Paths.get(dataFolder.getAbsolutePath(), userFolder, "Trajectory"));
     files.forEach((Path path) -> {
       try {
-        List<String> content = Files.lines(path).map((String l) -> userFolder + "," +
-          path.getFileName().toString().substring(0, 14) + "," + l).collect(Collectors.toList());
-        allContents.addAll(content.subList(6, content.size()));
+        List<String> content = Files.lines(path).map((String line) -> userFolder + "," +
+          path.getFileName().toString().substring(0, 14) + "," + line).collect(Collectors.toList());
+
+        allContents.addAll(validateContent(content).subList(6, content.size()));
       } catch (IOException ex) {
         Logger.getLogger(FileMerger.class.getName()).log(Level.SEVERE, null, ex);
       }
     });
+  }
+
+  private List<String> validateContent(List<String> rawContent) {
+    return rawContent.stream().filter(x -> !x.contains("777")).collect(Collectors.toList());
   }
 
   private String leftPadWithZeros(int i, @SuppressWarnings("SameParameterValue") int len) {
