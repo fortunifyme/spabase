@@ -45,7 +45,7 @@ public class FileMerger {
       System.exit(-1);
     }
     try {
-      new FileMerger().begin(args[0], Integer.parseInt(args[1]), Integer.parseInt(args[2]), args[3]);
+      new FileMerger().merge(args[0], Integer.parseInt(args[1]), Integer.parseInt(args[2]), args[3]);
     } catch (IOException ex) {
       LOG.log(Level.SEVERE, null, ex);
     }
@@ -61,7 +61,7 @@ public class FileMerger {
    * @param outputDir - self explanatory
    * @throws IOException - just in case
    */
-  private void begin(String folder, int start, int end, String outputDir) throws IOException {
+  private void merge(String folder, int start, int end, String outputDir) throws IOException {
     if (start >= end) {
       throw new IllegalArgumentException("start and end folder can't be the same");
     }
@@ -70,7 +70,7 @@ public class FileMerger {
     for (int i = start; i <= end; i++) {
       file = leftPadWithZeros(i, 3);
       LOG.log(Level.INFO, "reading file - {0}", file);
-      readTrajectoryFolder(dataFolder, file);
+      readTrajectoryFolder(dataFolder, file, outputDir);
     }
     LOG.log(Level.INFO, "sorting all content read into a new file");
     allContents.sort(new RecordComparator());
@@ -80,21 +80,25 @@ public class FileMerger {
       allContents, StandardOpenOption.CREATE_NEW);
   }
 
-  private void readTrajectoryFolder(File dataFolder, String userFolder) throws IOException {
+  private void readTrajectoryFolder(File dataFolder, String userFolder, String outputDir) throws
+    IOException {
     Stream<Path> files = Files.list(Paths.get(dataFolder.getAbsolutePath(), userFolder, "Trajectory"));
     files.forEach((Path path) -> {
       try {
         List<String> content = Files.lines(path).map((String line) -> userFolder + "," +
           path.getFileName().toString().substring(0, 14) + "," + line).collect(Collectors.toList());
-
-        allContents.addAll(validateContent(content).subList(6, content.size()));
+        allContents.addAll(validateContent(content, outputDir).subList(6, content.size()));
       } catch (IOException ex) {
         Logger.getLogger(FileMerger.class.getName()).log(Level.SEVERE, null, ex);
       }
     });
   }
 
-  private List<String> validateContent(List<String> rawContent) {
+  private List<String> validateContent(List<String> rawContent, String outputDir) throws IOException {
+    String file = "invalidLinesLog";
+    final List<String> log = rawContent.stream()
+      .filter(x -> x.contains("777")).collect(Collectors.toList());
+    Files.write(Paths.get(outputDir, file), log, StandardOpenOption.CREATE_NEW);
     return rawContent.stream().filter(x -> !x.contains("777")).collect(Collectors.toList());
   }
 

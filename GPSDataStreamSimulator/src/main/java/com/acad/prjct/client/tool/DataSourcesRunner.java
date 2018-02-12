@@ -12,8 +12,8 @@ import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class RealTimeDeviceClientSimulator {
-  private static final Logger LOG = Logger.getLogger(RealTimeDeviceClientSimulator.class.getName());
+public class DataSourcesRunner {
+  private static final Logger LOG = Logger.getLogger(DataSourcesRunner.class.getName());
 
   public static void main(@SuppressWarnings("ParameterCanBeLocal") String[] args) {
     args = new String[]{"D:\\data_dump\\Geolife Trajectories 1.3\\Data",
@@ -25,14 +25,15 @@ public class RealTimeDeviceClientSimulator {
       System.exit(-1);
     }
 
-    File[] files = new File(args[0]).listFiles((File dir, String name) -> name.contains(".pltdata"));
+    File[] files = new File(args[0])
+      .listFiles((File dir, String name) -> name.contains(".pltdata"));
     assert files != null;
     LOG.log(Level.INFO, "Files found \n{0}", Arrays.asList(files));
     int noThreads = files.length;
     LOG.log(Level.INFO, "setting the number of concurrent threads to {0}", noThreads);
     Executor executor = Executors.newFixedThreadPool(noThreads);
     for (File file : files) {
-      executor.execute(new ClientSimulator(file, args[1], args[2]));
+      executor.execute(new SeparateDataSourceSimulator(file, args[1], args[2]));
     }
   }
 }

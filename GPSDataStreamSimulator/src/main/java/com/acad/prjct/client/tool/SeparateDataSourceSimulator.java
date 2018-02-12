@@ -13,15 +13,15 @@ import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
 
-public class ClientSimulator implements Runnable {
+public class SeparateDataSourceSimulator implements Runnable {
   private final File file;
   private final String topic;
   private final KafkaMessageProducer kafkaMessageProducer;
   private final Random random;
-  private static final Logger LOG = Logger.getLogger(ClientSimulator.class.getName()
+  private static final Logger LOG = Logger.getLogger(SeparateDataSourceSimulator.class.getName()
     + Thread.currentThread().getName());
 
-  ClientSimulator(File file, String brokerUrl, String topic) {
+  SeparateDataSourceSimulator(File file, String brokerUrl, String topic) {
     this.file = file;
     this.topic = topic;
     this.kafkaMessageProducer = new KafkaMessageProducer(brokerUrl);
@@ -37,7 +37,7 @@ public class ClientSimulator implements Runnable {
       LOG.log(Level.INFO, "Reading the content of file");
       lIt = FileUtils.lineIterator(this.file);
     } catch (IOException ex) {
-      Logger.getLogger(ClientSimulator.class.getName()).log(Level.SEVERE, null, ex);
+      Logger.getLogger(SeparateDataSourceSimulator.class.getName()).log(Level.SEVERE, null, ex);
       throw new RuntimeException(ex);
     }
     String line;
@@ -56,7 +56,7 @@ public class ClientSimulator implements Runnable {
         //noinspection AccessStaticViaInstance
         Thread.currentThread().sleep(this.random.nextInt(222));
       } catch (InterruptedException ex) {
-        Logger.getLogger(ClientSimulator.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(SeparateDataSourceSimulator.class.getName()).log(Level.SEVERE, null, ex);
       }
     }
   }
