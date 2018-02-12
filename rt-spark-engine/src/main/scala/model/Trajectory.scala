@@ -1,11 +1,8 @@
 package model
 
 
-import java.util.Date
-import org.joda.time.Duration
-
-
-case class Trajectory(plat: Float, plon: Float, lat: Float, lon: Float, pts: Long, ts: Long, trajId: String) extends java.io.Serializable {
+case class Trajectory(plat: Float, plon: Float, lat: Float, lon: Float, pts: Long,
+                      ts: Long, trajId: String, userId: String) extends java.io.Serializable {
 
 
   val dist: Double = distance(plat, plon, lat, lon)
@@ -36,7 +33,7 @@ case class Trajectory(plat: Float, plon: Float, lat: Float, lon: Float, pts: Lon
       ts - pts
   }
 
-  def toTuple: (String, Float, Float, Float, Float, Double, Long, Long, Long, String) = {
-    (trajId + "|" + (Long.MaxValue - ts).toString, plat, plon, lat, lon, dist, pts, ts, timeDiff, trajId)
+  def toTuple: (String, Float, Float, Float, Float, Double, Long, Long, Long, String, String) = {
+    (trajId + "|" + (Long.MaxValue - ts).toString, plat, plon, lat, lon, dist, pts, ts, timeDiff, trajId, userId)
   }
 }

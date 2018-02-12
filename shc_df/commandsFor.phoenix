@@ -1,0 +1,38 @@
+
+ 
+sqlline.py localhost
+
+!tables - list all tables and view
+drop view "mvment_by_traj";
+#apache phoenix view creation command mvment_by_traj
+create view "mvment_by_traj" (ROWKEY VARCHAR PRIMARY KEY, "main"."plat" UNSIGNED_FLOAT, "main"."plon" UNSIGNED_FLOAT, "main"."lon" UNSIGNED_FLOAT, "main"."lat" UNSIGNED_FLOAT, "main"."dist" UNSIGNED_DOUBLE, "main"."pts" UNSIGNED_LONG , "main"."ts" UNSIGNED_LONG , "main"."tdiffs" UNSIGNED_LONG, "main"."trajid" VARCHAR);
+
+
+#apache phoenix view creation command mvment_by_traj with userId
+create view "mvment_by_traj" (ROWKEY VARCHAR PRIMARY KEY, "main"."plat" UNSIGNED_FLOAT, "main"."plon" UNSIGNED_FLOAT, "main"."lon" UNSIGNED_FLOAT, "main"."lat" UNSIGNED_FLOAT, "main"."dist" UNSIGNED_DOUBLE, "main"."pts" UNSIGNED_LONG , "main"."ts" UNSIGNED_LONG , "main"."tdiffs" UNSIGNED_LONG, "main"."trajid" VARCHAR, "main"."userId" VARCHAR);
+
+#apache phoenix view creation command mvment
+create view "mvment" (ROWKEY VARCHAR PRIMARY KEY, "main"."trajId" VARCHAR, "main"."lat" UNSIGNED_FLOAT, "main"."lon" UNSIGNED_FLOAT, "main"."alt" UNSIGNED_FLOAT, "main"."ts" UNSIGNED_LONG , "main"."userId" VARCHAR);
+
+-- show all userId
+select distinct("userId") from "mvment_by_traj" limit 11;
+
+-- trajectories mvment_by_traj show all
+
+select "trajid","plat","plon","lon","lat","dist","pts", "ts","tdiffs"  distance from "mvment_by_traj" limit 2  ;
+
+
+-- trajectories by distance
+select "trajid", sum("dist") distance from "mvment_by_traj" group by "trajid";
+
+
+
+-- trajectories by duration
+select "trajid", sum("tdiffs") duration from "mvment_by_traj" group by "trajid";
+
+
+-- user by trajectories
+select "userId", count(distinct "trajId") from "mvment" group by "userId" limit 3;
+
+-- user by collection period
+select "userId", min("ts") mints, max("ts") maxts from "mvment" group by "userId";

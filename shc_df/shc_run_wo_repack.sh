@@ -60,7 +60,7 @@ fi
 
 
 
-mvn clean:clean package
+# mvn clean:clean package
 
 echo " ==== jar ready to run ==== "
 

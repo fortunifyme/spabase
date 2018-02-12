@@ -1,17 +1,7 @@
 package org.apache.spark.sql.execution.datasources.hbase
 
-import org.apache.spark.sql.execution.datasources.hbase._
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
-/*case class HBaseCompositeRecord(
-                                 col00: String, // rowkey
-                                 col1: String, // trajId
-                                 col2: Float, // lat
-                                 col3: Float, // lon
-                                 col4: Float, // alt
-                                 col5: Long, // ts
-                                 col6: String // userId
-                               )*/
 
 case class HBaseCompositeRecord(
                                  rowkey: String,
@@ -23,30 +13,10 @@ case class HBaseCompositeRecord(
                                  pts: Long,
                                  ts: Long,
                                  tdiffs: Long,
-                                  trajid: String
-                                 //trajid: Long
+                                 trajid: String,
+                                 userId: String
                                )
 
-/*
-
-"rowkey":{"cf":"rowkey", "col":"ROWKEY", "type":"string", "length":"26" },
-"plat":{"cf":"main", "col":"plat", "type":"float"},
-"plon":{"cf":"main", "col":"plon", "type":"float"},
-"lon":{"cf":"main", "col":"lon", "type":"float"},
-"lat":{"cf":"main", "col":"lat", "type":"float"},
-"dist":{"cf":"main", "col":"dist", "type":"double"},
-"pts":{"cf":"main", "col":"pts", "type":"long"},
-"ts":{"cf":"main", "col":"ts", "type":"long"},
-"tdiffs":{"cf":"main", "col":"alt", "type":"long"},
-"trajid":{"cf":"main", "col":"ts", "type":"string"}
-
-*/
-
-/*
-create view "mvment" (ROWKEY VARCHAR PRIMARY KEY, "main"."trajId" VARCHAR,
-"main"."lat" UNSIGNED_FLOAT, "main"."lon" UNSIGNED_FLOAT, "main"."alt" UNSIGNED_FLOAT,
-"main"."ts" UNSIGNED_LONG , "main"."userId" VARCHAR);
-*/
 
 object HBaseCompositeRecord {
   // s"row${"%03d".format(i)}",
@@ -61,10 +31,8 @@ object HBaseCompositeRecord {
       i.toLong,
       i.toLong,
       i.toLong,
-      // s"row${"%03d".format(i)}"
-     //  s"String$i extra"
+      i.toString,
       i.toString
-   //   i.toLong
     )
   }
 }
@@ -73,45 +41,9 @@ object HBaseCompositeRecord {
 object CompositeKey {
 
 
-  /*
-  create view "mvment" (ROWKEY VARCHAR PRIMARY KEY, "main"."trajId" VARCHAR,
-  "main"."lat" UNSIGNED_FLOAT, "main"."lon" UNSIGNED_FLOAT, "main"."alt" UNSIGNED_FLOAT,
-  "main"."ts" UNSIGNED_LONG , "main"."userId" VARCHAR);
-  */
-
-  /*  println("\n\n\n  ==start try_1_57 - try to read mvment keys with limited length    " +
-      " result : no critical exceptions => output with UTF-8 problem => SUCCESS !!!   ***  \n\n\n")
-    def cat = s"""{
-                 |"table":{"namespace":"default", "name":"mvment", "tableCoder":"PrimitiveType"},
-                 |"rowkey":"ROWKEY",
-                 |"columns":{
-                 |"rowkey":{"cf":"rowkey", "col":"ROWKEY", "type":"string", "length":"16" },
-                 |"trajId":{"cf":"main", "col":"trajId", "type":"string"},
-                 |"lat":{"cf":"main", "col":"lat", "type":"float"},
-                 |"lon":{"cf":"main", "col":"lon", "type":"float"},
-                 |"alt":{"cf":"main", "col":"alt", "type":"float"},
-                 |"ts":{"cf":"main", "col":"ts", "type":"long"},
-                 |"userId":{"cf":"main", "col":"userId", "type":"string"}
-                 |}
-                 |}""".stripMargin*/
-
   println("\n\n\n  ==start try_1_58 - try to read mvment keys with limited length    " +
     " result :  => SUCCESS !!!   ***  \n\n\n")
 
-  /*  def cat =
-      s"""{
-         |"table":{"namespace":"default", "name":"mvment", "tableCoder":"PrimitiveType"},
-         |"rowkey":"ROWKEY",
-         |"columns":{
-         |"rowkey":{"cf":"rowkey", "col":"ROWKEY", "type":"string", "length":"26" },
-         |"trajId":{"cf":"main", "col":"trajId", "type":"string"},
-         |"lat":{"cf":"main", "col":"lat", "type":"float"},
-         |"lon":{"cf":"main", "col":"lon", "type":"float"},
-         |"alt":{"cf":"main", "col":"alt", "type":"float"},
-         |"ts":{"cf":"main", "col":"ts", "type":"long"},
-         |"userId":{"cf":"main", "col":"userId", "type":"string"}
-         |}
-         |}""".stripMargin*/
 
   def cat: String =
     s"""{
@@ -127,7 +59,8 @@ object CompositeKey {
        |"pts":{"cf":"main", "col":"pts", "type":"long"},
        |"ts":{"cf":"main", "col":"ts", "type":"long"},
        |"tdiffs":{"cf":"main", "col":"tdiffs", "type":"long"},
-       |"trajid":{"cf":"main", "col":"trajid", "type":"string" }
+       |"trajid":{"cf":"main", "col":"trajid", "type":"string" },
+       |"userId":{"cf":"main", "col":"userId", "type":"string" }
        |}
        |}""".stripMargin
 
@@ -141,20 +74,6 @@ object CompositeKey {
     val sc = spark.sparkContext
     val sqlContext = spark.sqlContext
 
-    import sqlContext.implicits._
-
-    //populate table with composite key
-    /* val data = (0 to 255).map { i =>
-         HBaseCompositeRecord(i)
-     }
-
-
-
-
-      sc.parallelize(data).toDF.write.options(
-        Map(HBaseTableCatalog.tableCatalog -> cat, HBaseTableCatalog.newTable -> "5"))
-        .format("org.apache.spark.sql.execution.datasources.hbase")
-        .save()*/
 
     def withCatalog(cat: String): DataFrame = {
       sqlContext
@@ -164,14 +83,6 @@ object CompositeKey {
         .load()
     }
 
-    /*  //populate table with composite key
-      val data = (0 to 255).map { i =>
-          HBaseCompositeRecord(i)
-      }
-      sc.parallelize(data).toDF.write.options(
-        Map(HBaseTableCatalog.tableCatalog -> cat, HBaseTableCatalog.newTable -> "5"))
-        .format("org.apache.spark.sql.execution.datasources.hbase")
-        .save()*/
 
     //full query
     val df = withCatalog(cat)
@@ -191,7 +102,7 @@ object CompositeKey {
     // list.forEach(x=> println(x))
     // println(list  "\n")
     println(list)
-    for (element <-list )
+    for (element <- list)
       println(element)
 
 
