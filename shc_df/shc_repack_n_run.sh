@@ -11,7 +11,7 @@ echo "curr dir is ==> " ${current_dir}
 target_dir="target/"
 SPARK_APP_PATH="$current_dir/$target_dir"
 SPARK_APP_NAME=shc-examples-1.1.2-2.2-s_2.11-SNAPSHOT.jar
-SPARK_APP_CLASS_NAME=org.apache.spark.sql.execution.datasources.hbase.CompositeKey
+SPARK_APP_CLASS_NAME=org.apache.spark.sql.execution.datasources.hbase.DataAnalyticsRunner
 echo ${SPARK_APP_PATH}
 echo "curr dir is ==> " ${current_dir}
 

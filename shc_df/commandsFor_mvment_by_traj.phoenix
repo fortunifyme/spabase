@@ -22,7 +22,7 @@ select distinct("userId") from "mvment_by_traj" limit 11;
 select "trajid","plat","plon","lon","lat","dist","pts", "ts","tdiffs"  distance from "mvment_by_traj" limit 2  ;
 
 
--- trajectories_by_distance
+-- trajectories by distance
 select "trajid", sum("dist") distance from "mvment_by_traj" group by "trajid";
 
 
@@ -36,7 +36,3 @@ select "userId", count(distinct "trajId") from "mvment" group by "userId" limit 
 
 -- user by collection period
 select "userId", min("ts") mints, max("ts") maxts from "mvment" group by "userId";
-
-
--- select all
-select *from "mvment_by_traj";
